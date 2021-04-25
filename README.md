@@ -1,3 +1,2 @@
 # anisotropi4.github.io
-
-Repository for webpage data visualisations
+Population density visualisation
