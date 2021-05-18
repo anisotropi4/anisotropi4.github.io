@@ -72,7 +72,6 @@
              return div;
          };
          legend.addTo(map);
-
          var vectorTileStyling = {
              density: function (properties, zoom) {
                  var density = properties.density;
@@ -101,7 +100,6 @@
              minZoom: minZoom,
              vectorTileLayerStyles: vectorTileStyling,
          }
-
          var mapVectorTileOptions = {
              rendererFactory: L.canvas.tile,
              interactive: true,
@@ -112,7 +110,6 @@
          }
 
          var mapPbfLayer = L.vectorGrid.protobuf(mapUrl, mapVectorTileOptions).addTo(map);
-
          mapPbfLayer.bindPopup(function (layer) {
              const lookup = {
                  "OA11CD": "OA11 code",
@@ -132,7 +129,6 @@
              }
              return popupContent;
          });
-
          var zoomcontrol = new L.Control.Zoom({ position: 'bottomright' }).addTo(map)
         </script>
     </body>
