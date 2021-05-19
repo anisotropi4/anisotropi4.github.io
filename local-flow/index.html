@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-	      <title>Passenger Flow in England and Wales based on 2011 Census data</title>
-	      <meta charset="utf-8"/>
-	      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <title>Passenger Flow in England and Wales based on 2011 Census data</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
         <link rel="stylesheet" href="//azavea.github.io/Leaflet.zoomdisplay/css/leaflet.zoomdisplay.css"/>
     </head>
     <style>
-     .legend { 
+     .legend {
          text-align: left;
          line-height: 20px;
          background: white;
@@ -29,7 +29,7 @@
          height: 5px;
          margin-top: 2px;
      }
-     .radio { 
+     .radio {
          text-align: left;
          line-height: 20px;
          background: white;
@@ -38,16 +38,17 @@
      }
     </style>
     <body style='margin:0'>
-	      <div id="map" style="width: 100vw; height: 100vh; background: white"></div>
-	      
-	      <script type="text/javascript"  src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	      <script type="text/javascript"  src="https://unpkg.com/leaflet.vectorgrid@1.3.0"></script>
+        <div id="map" style="width: 100vw; height: 100vh; background: white"></div>
+        <script type="text/javascript"  src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script type="text/javascript"  src="https://unpkg.com/leaflet.vectorgrid@1.3.0"></script>
         <script src="//azavea.github.io/Leaflet.zoomdisplay/js/leaflet.zoomdisplay.js"></script>
-	      <script>
+        <script>
          const minZoom = 5;
          const maxZoom = 12;
-         const cGroup = 8;
+         const nGroup = Array.from(Array(8).keys()).map(function (v) { return v / 8});
          var cType = 'Motor';
+         var vMax = -1.0;
+         var scale = 1.0;
          const cTypes = {"Active": "Walking-cycling",
                          "Motor":  "Motor vehicle",
                          "Public": "Public transport",
@@ -57,27 +58,37 @@
                          "Driving": "Motor Car",
                          "Metro": "Metro",
                          "Pedestrian": "Pedestrian",
+                         "Train": "Train",
+                         "Taxi": "Taxi",
+                         "Motorbike": "Motorcycle",
          };
          var map = L.map('map', {
              minZoom: minZoom,
              maxZoom: maxZoom,
              zoomControl: false,
-         }).setView([52.83, -1.53], 7);         
-         function get_color(v, n=cGroup) {
+         }).setView([52.83, -1.53], 7);
+         function get_ncolor(v) {
+             for (var i = nGroup.length - 1; i > 0; i--) if (v >= nGroup[i]) return i;
+             return 0;
+         };
+         function get_color(v, n=nGroup.length) {
              const orange = {4: ["#fff2e6", "#ffcc99", "#ffa54c", "#ff7900"],
                              5: ["#fff2e6", "#ffd6ad", "#ffb973", "#ff9c39", "#ff7900"],
-                             8: ["#fff2e6", "#ffe2c5", "#ffd1a4", "#ffc183", "#ffb062", "#ffa041", "#ff8f20", "#ff7900"]};             
-             return orange[n][Math.floor(v * n)];
+                             8: ["#fff2e6", "#ffe2c5", "#ffd1a4", "#ffc183", "#ffb062", "#ffa041", "#ff8f20", "#ff7900"]};
+             return orange[n][get_ncolor(v)];
          };
          var legend = L.control({position: 'bottomleft'});
          legend.onAdd = function (map) {
              var div = L.DomUtil.create('div', 'info legend');
              var labels = ['<strong>'+ cTypes[cType] + '</strong>'];
              var from, to;
-             for (var i = 0; i < cGroup; i++) {
-                 s = (i / cGroup).toFixed(3);
-                 t = ((i+1) / cGroup).toFixed(3);
-                 labels.push('<i class="square" style="background:' + get_color(s) + '"></i> ' + s + (t ? '&ndash;' + t : '+'));
+             const n = nGroup.length;
+             const m = 3 + Math.log2(scale);
+             const sGroup = nGroup.map(function (v) { return v / scale });
+             for (var i = 0; i < n; i++) {
+                 s = sGroup[i].toFixed(m);
+                 t = sGroup[i+1] ? sGroup[i+1].toFixed(m) : (sGroup[1] + sGroup[n - 1]).toFixed(m);
+                 labels.push('<i class="square" style="background:' + get_color(s * scale) + '"></i> ' + s + '&ndash;' + t);
              }
              div.innerHTML = labels.join('<br>');
              return div;
@@ -87,6 +98,10 @@
              console.log(type);
              cType = type;
              mapPbfLayer.redraw();
+             vMax = -1.0;
+             scale = 1.0;
+             var div = document.getElementById("scale");
+             if (div != null) div.parentNode.removeChild(div);
              legend.remove();
              legend.addTo(map);
          }
@@ -101,12 +116,19 @@
              return div
          }
          radio.addTo(map);
+         function radioscale(v) {
+             scale = 1.0 / v;
+             mapPbfLayer.redraw();
+             legend.remove();
+             legend.addTo(map);
+         }
          var vectorTileStyling = {
              flow: function (properties, zoom, x) {
-                 var type = properties['B'];
-                 var p = properties;
-                 var v = p[cType] / p['Sum'];
-                 var color = get_color(v);
+                 const type = properties['B'];
+                 const p = properties;
+                 const v = p[cType] / p['Sum'];
+                 const color = get_color(v * scale);
+                 vMax = (v > vMax) ? v : vMax;
                  if (type == "-") {
                      return ({
                          fill: false,
@@ -126,17 +148,33 @@
                  });
              },
          };
-	       var mapUrl = "tiles/{z}/{x}/{y}.pbf";
+         var mapUrl = "tiles/{z}/{x}/{y}.pbf";
          var mapVectorTileOptions = {
-			       rendererFactory: L.canvas.tile,
+             rendererFactory: L.canvas.tile,
              interactive: true,
-			       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ONS and National Records Scotland<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"> Open Government License</a>',
+             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ONS and National Records Scotland<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"> Open Government License</a>',
              maxNativeZoom: maxZoom,
              minZoom: minZoom,
-			       vectorTileLayerStyles: vectorTileStyling,
+             vectorTileLayerStyles: vectorTileStyling,
              type: 'Motor',
          }
          var mapPbfLayer = L.vectorGrid.protobuf(mapUrl, mapVectorTileOptions).addTo(map);
+         mapPbfLayer.on("load", function () {
+             var div = document.getElementById("scale");
+             if (div != null) return;
+             const n = Math.min(1.0 / (2.0 ** Math.ceil(Math.log2(vMax))), 5);
+             if (n == 1) return;
+             const nScale = Array.from(Array(n).keys()).map(function (m) { return 1.0 / (2 ** m)});
+             var div = L.DomUtil.create("div", "radio scale");
+             div["id"] = "scale";
+             var labels = ['<strong>Scale</strong>'];
+             for (var i=0; i < nScale.length; i++) {
+                 var v = nScale[i].toFixed(n - 1);
+                 labels.push('<input onclick="radioscale(' + v + ')" type="radio" name="scales" value="' + v + '"' + ((v == 1) ? 'checked>' : '>') + v + '</>');
+             }
+             div.innerHTML = labels.join('<br>');
+             radio.getContainer().append(div);
+         });
          mapPbfLayer.bindPopup(function (layer) {
              const p = layer.properties;
              var name = p['A'];
@@ -152,6 +190,6 @@
              return popupContent;
          });
          var zoomcontrol = new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
-	      </script>
+        </script>
     </body>
 </html>
