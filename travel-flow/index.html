@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Passenger Flow in England and Wales based on 2011 Census data</title>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+        <link rel="stylesheet" href="//azavea.github.io/Leaflet.zoomdisplay/css/leaflet.zoomdisplay.css"/>
+    </head>
+    <style>
+     .legend { 
+         text-align: left;
+         line-height: 20px;
+         background: white;
+         opacity: 1;
+         padding: 8px;
+         bottom-margin: 20px;
+     }
+     .legend i {
+         width: 16px;
+         height: 16px;
+         float: left;
+         margin-right: 8px;
+         opacity: 1;
+     }
+     .legend square {
+         border-radius: 50%;
+         width: 5px;
+         height: 5px;
+         margin-top: 2px;
+     }
+     .radio { 
+         text-align: left;
+         line-height: 20px;
+         background: white;
+         opacity: 1;
+         padding: 10px;
+     }
+    </style>
+    <body style='margin:0'>
+        <div id="map" style="width: 100vw; height: 100vh; background: white"></div>  
+        <script type="text/javascript"  src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script type="text/javascript"  src="https://unpkg.com/leaflet.vectorgrid@1.3.0"></script>
+        <script src="//azavea.github.io/Leaflet.zoomdisplay/js/leaflet.zoomdisplay.js"></script>
+        <script>
+         const minZoom = 5;
+         const maxZoom = 12;
+         const nGroup = Array.from(Array(8).keys()).map(function (v) { return (v == 0) ? 0 : Math.round((Math.sqrt(10) ** (v+1)))});
+         var cType = "Motor";
+         var vMax = -1.0;
+         var scale = 1.0;
+         const cTypes = {"Active": "Walking-cycling",
+                         "Motor":  "Motor vehicle",
+                         "Public": "Public transport",
+                         "Bicycle": "Cycling",
+                         "Bus": "Bus",
+                         "Passenger": "Passenger",
+                         "Driving": "Motor Car",
+                         "Metro": "Metro",
+                         "Pedestrian": "Pedestrian",
+                         "Train": "Train",
+                         "Taxi": "Taxi",
+                         "Motorbike": "Motorcycle",
+         };
+         var map = L.map('map', {
+             minZoom: minZoom,
+             maxZoom: maxZoom,
+             zoomControl: false,
+         }).setView([52.83, -1.53], 7);
+         function get_group(v) {
+             for (var i = nGroup.length - 1; i > 0; i--) if (v >= nGroup[i]) return i;
+             return 0;
+         };
+         function get_color(v, n=nGroup.length) {
+             const orange = {4: ["#fff2e6", , "#ffcc99", "#ffa54c", "#ff7900"],
+                             5: ["#fff2e6", "#ffd6ad", "#ffb973", "#ff9c39", "#ff7900"],
+                             8: ["#fff2e6", "#ffe2c5", "#ffd1a4", "#ffc183", "#ffb062", "#ffa041", "#ff8f20", "#ff7900"]             
+             };
+             return orange[n][get_group(v)];
+         };
+         function get_weight(v, n=nGroup.length) {
+             const w = {4: [0.125, 0.5, 1.0, 4.0],
+                        5: [0.125, 0.5, 1.0, 2.0, 4.0],
+                        8: [0.25, 0.25, 0.5, 1.0, 2.0, 2.0, 4.0, 4.0]}
+             return w[n][get_group(v)];
+         }
+         var legend = L.control({position: 'bottomleft'});
+         legend.onAdd = function (map) {
+             var div = L.DomUtil.create('div', 'info legend');
+             var labels = ['<strong>'+ cTypes[cType] + '</strong>'];
+             var from, to;
+             const n = nGroup.length;
+             const m = 3 + Math.log2(scale);
+             const sGroup = nGroup.map(function (v) { return (v / scale).toFixed(2)});
+             for (var i = 0; i < n; i++) {
+                 var s = sGroup[i];
+                 var t = sGroup[i+1] ? "&ndash;" + sGroup[i+1] : '+';
+                 labels.push('<i class="square" style="background:' + get_color(s * scale) + '"></i> ' + s + t);
+             }
+             div.innerHTML = labels.join('<br>');
+             return div;
+         };
+         legend.addTo(map);
+         function radioclick(type) {
+             console.log(type);
+             cType = type;
+             mapPbfLayer.redraw();
+             vMax = -1.0;
+             scale = 1.0;
+             var div = document.getElementById("scale");
+             if (div != null) div.parentNode.removeChild(div);
+             legend.remove();
+             legend.addTo(map);
+         }
+         var radio = L.control({position: 'topright'});
+         radio.onAdd = function (map) {
+             var div = L.DomUtil.create('div', 'radio');
+             var labels = ['<strong>Categories</strong>'];
+             for (var k in cTypes) {
+                 labels.push('<input onclick="radioclick(\'' + k + '\')" type="radio" name="types" value="' + k + '"' + ((k == cType) ? 'checked>' : '>') + cTypes[k] + '</>');
+             }
+             div.innerHTML = labels.join('<br>');
+             return div
+         }
+         radio.addTo(map);
+         function radioscale(v) {
+             scale = v;
+             mapPbfLayer.redraw();
+             legend.remove();
+             legend.addTo(map);
+         }
+         var vectorTileStyling = {
+             flow: function (properties, zoom) {
+                 const p = properties;
+                 const v = p[cType];
+                 const color = get_color(v * scale);
+                 const weight = get_weight(v) * (1.0 + Math.log10(scale));
+                 vMax = (v > vMax) ? v : vMax;
+                 return ({
+                     fill: false,
+                     weight: weight,
+                     color: color,
+                     opacity: 0.2,
+                     zIndex: 100,
+                 });
+             },
+         };
+         const mapUrl = "tiles/{z}/{x}/{y}.pbf";
+         var mapVectorTileOptions = {
+             rendererFactory: L.canvas.tile,
+             interactive: true,
+             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ONS and National Records Scotland<a href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"> Open Government License</a>',
+             maxNativeZoom: maxZoom,
+             minZoom: minZoom,
+             vectorTileLayerStyles: vectorTileStyling,
+         }
+         var mapPbfLayer = L.vectorGrid.protobuf(mapUrl, mapVectorTileOptions).addTo(map);
+         mapPbfLayer.on("load", function () {
+             var div = document.getElementById("scale");
+             if (div != null) return;
+             const n = Math.min(Math.floor(Math.log(vMax) / Math.log(10.0)), 3)
+             if (n == 1) return;
+             const nScale = Array.from(Array(n).keys()).map(function (m) { return 10.0 ** m});
+             var div = L.DomUtil.create("div", "radio scale");
+             div["id"] = "scale";
+             var labels = ['<strong>Scale</strong>'];
+             for (var i=0; i < nScale.length; i++) {
+                 var v = nScale[i];
+                 labels.push('<input onclick="radioscale(' + v + ')" type="radio" name="scales" value="' + v + '"' + ((v == 1) ? 'checked>' : '>') + "x" + v.toFixed(2) + '</>');
+             }
+             div.innerHTML = labels.join('<br>');
+             radio.getContainer().append(div);
+         });
+         mapPbfLayer.bindPopup(function (layer) {
+             const p = layer.properties;
+             const name = p['Town'] + "&ndash;" + p['Work'];
+             const sum = p['Sum'];
+             var popupContent = "<b>" + name + "</b>";
+             for (const [k, v] of Object.entries(p)) {
+                 if (k in cTypes) {
+                     popupContent += "<br>" + cTypes[k] + ": " + p[k] + " (" + (p[k] / sum).toFixed(2) + ")";
+                 }
+             }
+             popupContent += "<br>total :      " + sum + " (1.00)";
+             return popupContent;
+         });
+         var zoomcontrol = new L.Control.Zoom({ position: 'bottomright' }).addTo(map);
+        </script>
+    </body>
+</html>
