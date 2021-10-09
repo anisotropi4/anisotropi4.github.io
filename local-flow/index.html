@@ -175,7 +175,8 @@
          });
          mapPbfLayer.bindPopup(function (layer) {
              const p = layer.properties;
-             const name = p['Town']; // + "&ndash;" + p['Work'];
+             var name = p['A'];
+             if (p['B'] != "-") name += " " + p['B'];
              const sum = p['Sum'];
              var popupContent = "<b>" + name + "</b>";
              for (const [k, v] of Object.entries(p)) {
