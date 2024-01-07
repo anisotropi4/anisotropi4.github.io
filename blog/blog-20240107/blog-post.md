@@ -145,5 +145,5 @@ All data used on the basis that it under open or permissive license
 [^6]: Hosting:
     Given the level of interest, and in anticipation of the next years data, I am in discussions about providing stable hosting elsewhere. I just need to find a way to also host the raw data and not just the image files.
 
-[^7] With his permission:
+[^7]: With his permission:
     I did ask.
