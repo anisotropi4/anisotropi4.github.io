@@ -56,7 +56,7 @@ Where you have a property associated with each of the flows, in this case annual
 
 ![](./image/twitter-post-20240101T155500.png)[^5]
 
-Which was about 15:55 on 1 January 2024. These were hand-cranked in [QGIS](https://www.qgis.org/) and look cool. They have clocked up 32k views in under a week which, for me, is big engagement numbers. But I had to generate a `GeoPKG` file for each station I thought, why not do something scripted, like [`matplotlib`](https://matplotlib.org/) and generate a PNG image file for the data. A bit more scripting to generate the images and a Markdown reference file was done, and the following evening at 19:09 I put up the 2,567 images [post](https://fxtwitter.com/WillDeakin1/status/1742261940800401576).
+Which was about 15:55 on 1 January 2024. These were hand-cranked in [QGIS](https://www.qgis.org/) and look cool. They have clocked up 32k views in under a week which, for me, is big engagement numbers. But I had to generate a `GeoPKG` file for each station I thought, why not do something scripted, like [`matplotlib`](https://matplotlib.org/) and generate a PNG image file for the data. A bit more scripting to generate the images, a Markdown reference file and it was done by the following evening. At 19:09 I put up the 2,567 images [post](https://fxtwitter.com/WillDeakin1/status/1742261940800401576).
 
 ## What Did People Think?
 Alasdair spotted my post and was kind enough to repost [here](https://fxtwitter.com/undertheraedar/status/1742273707177853391) with some nice words and picked out some cool selections of images, and it kind of took off.
@@ -68,7 +68,7 @@ There were some issues in with the first 24-hours. I had made two really stupid 
 ### UX is important
 + I had gone with two-columns which meant *many people on phones couldn't see the second column* and **wanted to know where their station was**
 
-The original Markdown was a four-column table. But I though I would check and asked around. Peter Hicks suggested on column but I convinced him that two was ok. Oy vey.
+The original Markdown was a four-column table. But I though I would check and asked around. Peter Hicks suggested one column but I convinced him that two was ok. Oy vey.
 
 ### Hosting Gremlins
 + I planned to push the 16GB of data as well as the image files, I had set up the images as GitHub Large File Storage (LFS)
