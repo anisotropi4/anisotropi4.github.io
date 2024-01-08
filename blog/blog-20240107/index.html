@@ -303,16 +303,16 @@
 <p>It sets out the backgroud is to this post on and how it seemed to get a bit daft. I'm not sure if it went viral, at just shy of 500k page impression on X, and 15k on LinkedIn in under a week, maybe more bacterial?</p>
 <p><a target="_blank" rel="noopener noreferrer" href="./image/twitter-post-20240102T104500.png"><img src="./image/twitter-post-20240102T104500.png" alt="" style="max-width: 100%;"></a></p>
 <h2><a id="user-content-background" class="anchor" aria-hidden="true" tabindex="-1" href="#background"><span aria-hidden="true" class="octicon octicon-link"></span></a>Background</h2>
-<p>During the Merrineum, in the dog days between the feast of St Stephen and the New Year, I often find myself on holiday and at a lose-end. I like a short data project, and in previous years I have had a go at taking the National Electronic Sectional Appendix (NESA) loading-gauge tables for freight from PDF and converting them into a <a href="https://github.com/anisotropi4/nesa">spreadsheet</a> or converting 30GB of MicroSoft inferred road location data. I can't share a link to this as it blew my GitHub limit. I am a physicist by training, so let me tell you about this <a href="https://en.wikipedia.org/wiki/Spherical_cow" rel="nofollow">spherical cow</a>.</p>
+<p>During the Merrineum, in the dog days between the feast of St Stephen and the New Year, I often find myself on holiday and at a loose-end. I like a short data project, and in previous years I have had a go at taking the National Electronic Sectional Appendix (NESA) loading-gauge tables for freight from PDF and converting them into a <a href="https://github.com/anisotropi4/nesa">spreadsheet</a> or converting 30GB of MicroSoft inferred road location data. I can't share a link to this as it blew my GitHub limit. I am a physicist by training, so let me tell you about this <a href="https://en.wikipedia.org/wiki/Spherical_cow" rel="nofollow">spherical cow</a>.</p>
 <p>While I work in IT<sup><a href="#fn-2" id="user-content-fnref-2" data-footnote-ref="">2</a></sup> <em>this has nothing to do with my day job</em><sup><a href="#fn-3" id="user-content-fnref-3" data-footnote-ref="">3</a></sup>, only about seeing what I could do with OpenData. While work gives me familiarity with the rail data landscape and some of the challenges here, it is nothing more.</p>
 <h2><a id="user-content-the-big-boys-made-me-do-it" class="anchor" aria-hidden="true" tabindex="-1" href="#the-big-boys-made-me-do-it"><span aria-hidden="true" class="octicon octicon-link"></span></a>The Big-Boys Made Me Do It</h2>
-<p>Over that last few years this has been often inspired by an Alisdair Rae's posts, and this year it was this</p>
+<p>Over that last few years this has been often inspired by an Alasdair Rae's posts, and this year it was this</p>
 <p><a target="_blank" rel="noopener noreferrer" href="./image/undertheraedar-data-20231208T14:19:00.png"><img src="./image/undertheraedar-data-20231208T14:19:00.png" alt="" style="max-width: 100%;"></a></p>
 <p>I have been looking at open-data for a while now, where a key event for me would with Stuart Lowe's 2017 <a href="https://open-innovations.org/blog/2017-04-12-garth-map" rel="nofollow">Garth map</a>. Over the last few years I have followed this up with on-line talks about rail and open-data at the Leeds and Sheffield DigiFests<sup><a href="#fn-4" id="user-content-fnref-4" data-footnote-ref="">4</a></sup> and seminars to post-graduates about data-visualization and data-science.</p>
 <p>I'd also been looking at Peter Hicks' Freedom of Information data release of the national rail <a href="https://github.com/openraildata/network-rail-gis">centre-line track-model</a>, scraping the rail data from <a href="https://github.com/anisotropi4/magpie">Open Street Map</a>, and having a look at trying to overlay the <a href="https://github.com/anisotropi4/woodpecker">two-network models</a>.</p>
 <h3><a id="user-content-distances" class="anchor" aria-hidden="true" tabindex="-1" href="#distances"><span aria-hidden="true" class="octicon octicon-link"></span></a>Distances</h3>
 <p>While I had heard the financial year 2021/22 origin-destination matrix passenger data were available on the <a href="https://raildata.org.uk/" rel="nofollow">Rail Data Market place</a>, it involves registering, providing details of your organisation <em>almost to the point of providing inside leg measurements</em> and having a manual approval process, I hadn't quite got round to it.</p>
-<p>From Alisdair's post <a href="https://fxtwitter.com/undertheraedar/status/1733129178092806475" rel="nofollow">X/Twitter post</a>, he'd included <strong>as-the-crow-flies</strong> distances between railway station locations, and had also hosted it <a href="https://automaticknowledge.org/flowdata/" rel="nofollow">here</a>. My rather obvious thought was to extend this model to use the centre-line track-model to approximate the shortest-path distance between stations. I'd got the ORR passenger-flow data, and the FoI centre-line track-model, so how hard could it be?</p>
+<p>From Alasdair's post <a href="https://fxtwitter.com/undertheraedar/status/1733129178092806475" rel="nofollow">X/Twitter post</a>, he'd included <strong>as-the-crow-flies</strong> distances between railway station locations, and had also hosted it <a href="https://automaticknowledge.org/flowdata/" rel="nofollow">here</a>. My rather obvious thought was to extend this model to use the centre-line track-model to approximate the shortest-path distance between stations. I'd got the ORR passenger-flow data, and the FoI centre-line track-model, so how hard could it be?</p>
 <h3><a id="user-content-wrinkles-and-data-wrangling" class="anchor" aria-hidden="true" tabindex="-1" href="#wrinkles-and-data-wrangling"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wrinkles and Data Wrangling</h3>
 <p>If you have ever done this before, there is always a wrinkle. In this case there were several. Using python and a whole bunch of cool modules, wrangling involved all of the following</p>
 <ol>
@@ -344,19 +344,19 @@
 </ul>
 <p>For the rest of this work zero-distance locations were ignored.</p>
 <h3><a id="user-content-go-with-the-flow" class="anchor" aria-hidden="true" tabindex="-1" href="#go-with-the-flow"><span aria-hidden="true" class="octicon octicon-link"></span></a>Go With The Flow</h3>
-<p>Where you have a property associated with each of the flows, in this case annual passenger journeys, once you have a network model with identified paths between locations, you can start to do something interesting. My thought was to take all the track segments, sum across all locations and see what you get. Which is what I did <a href="https://fxtwitter.com/WillDeakin1/status/1741850764790596048" rel="nofollow">here</a>.</p>
+<p>Where you have a property associated with each of the flows, in this case annual passenger journeys, once you have a network model with identified paths between locations, you can start to do something interesting. My thought was to take all the track segments, sum across all locations and see what you get. Which is what I did <a href="https://fxtwitter.com/WillDeakin1/status/1741850764790596048" rel="nofollow">here</a></p>
 <p><a target="_blank" rel="noopener noreferrer" href="./image/twitter-post-20240101T155500.png"><img src="./image/twitter-post-20240101T155500.png" alt="" style="max-width: 100%;"></a><sup><a href="#fn-5" id="user-content-fnref-5" data-footnote-ref="">5</a></sup></p>
 <p>Which was about 15:55 on 1 January 2024. These were hand-cranked in <a href="https://www.qgis.org/" rel="nofollow">QGIS</a> and look cool. They have clocked up 32k views in under a week which, for me, is big engagement numbers. But I had to generate a <code>GeoPKG</code> file for each station I thought, why not do something scripted, like <a href="https://matplotlib.org/" rel="nofollow"><code>matplotlib</code></a> and generate a PNG image file for the data. A bit more scripting to generate the images and a Markdown reference file was done, and the following evening at 19:09 I put up the 2,567 images <a href="https://fxtwitter.com/WillDeakin1/status/1742261940800401576" rel="nofollow">post</a>.</p>
 <h2><a id="user-content-what-did-people-think" class="anchor" aria-hidden="true" tabindex="-1" href="#what-did-people-think"><span aria-hidden="true" class="octicon octicon-link"></span></a>What Did People Think?</h2>
-<p>Alisdair spotted my post and was kind enough to repost <a href="https://fxtwitter.com/undertheraedar/status/1742273707177853391" rel="nofollow">here</a> with some nice words and picked out some cool selections of images, and it kind of took off.</p>
+<p>Alasdair spotted my post and was kind enough to repost <a href="https://fxtwitter.com/undertheraedar/status/1742273707177853391" rel="nofollow">here</a> with some nice words and picked out some cool selections of images, and it kind of took off.</p>
 <p><a target="_blank" rel="noopener noreferrer" href="./image/twitter-post-20240102T104500.png"><img src="./image/twitter-post-20240102T104500.png" alt="" style="max-width: 100%;"></a></p>
-<p>There were some issues in with the first 24-hours. I had made two really stupid mistakes</p>
+<p>There were some issues in with the first 24-hours. I had made two really stupid mistakes and a deliberate one</p>
 <h3><a id="user-content-ux-is-important" class="anchor" aria-hidden="true" tabindex="-1" href="#ux-is-important"><span aria-hidden="true" class="octicon octicon-link"></span></a>UX is important</h3>
 <ul>
 <li>I had gone with two-columns which meant <em>many people on phones couldn't see the second column</em> and <strong>wanted to know where their station was</strong>
 </li>
 </ul>
-<p>The original Markdown was a four-column table. But I though I would check and asked around. Peter Hicks suggested on column but I convinced him that two was ok. Oy vey!</p>
+<p>The original Markdown was a four-column table. But I though I would check and asked around. Peter Hicks suggested on column but I convinced him that two was ok. Oy vey.</p>
 <h3><a id="user-content-hosting-gremlins" class="anchor" aria-hidden="true" tabindex="-1" href="#hosting-gremlins"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hosting Gremlins</h3>
 <ul>
 <li>I planned to push the 16GB of data as well as the image files, I had set up the images as GitHub Large File Storage (LFS)</li>
@@ -367,7 +367,7 @@
 <p>The tao of having a lot of folk look at your visualisation is that errors get spotted. As I really don't know this part of the UK well I asked and was giventhe sensible suggestion for a route between Ryde Pier Head to Portsmouth Harbour staions. I patched this using the Open Street Map ferry link plus some extra to complete the network. It is there now.</p>
 <h2><a id="user-content-reflections-and-impact" class="anchor" aria-hidden="true" tabindex="-1" href="#reflections-and-impact"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reflections and Impact</h2>
 <p>For me this has been a lot of fun but also scary, but hope some good has come out of this. There has been some excellent discussion about what it all means, some kind words, and the opportunity to write this blog.</p>
-<p>On Thursday morning Alisdair sent me this kind note, which I share here<sup><a href="#fn-7" id="user-content-fnref-7" data-footnote-ref="">7</a></sup></p>
+<p>On Thursday morning Alasdair sent me this kind note, which I share here<sup><a href="#fn-7" id="user-content-fnref-7" data-footnote-ref="">7</a></sup></p>
 <ol>
 <li>90% amazing, wow, love it - unreal piece of work</li>
 <li>5% MY StATiON isNT ListED</li>
@@ -405,9 +405,9 @@ It is a sign of how much I've grown since 1992 years that I didn't. <a href="#fn
 <li id="user-content-fn-2">
 <p>Twitter Bio:
 I do governance for British railway IT plus European regulation
-I believe data makes rail passengers lives better.</p>
-<p>Ask me how!</p>
-<p>#Physicist #OpenData #DataScience <a href="#fnref-2" data-footnote-backref="" aria-label="Back to reference 2">↩</a></p>
+I believe data makes rail passengers lives better.<br>
+Ask me how!
+#Physicist #OpenData #DataScience <a href="#fnref-2" data-footnote-backref="" aria-label="Back to reference 2">↩</a></p>
 </li>
 <li id="user-content-fn-3">
 <p>LinkedIn:
@@ -415,18 +415,18 @@ For what it's worth, my <a href="https://www.linkedin.com/in/will-deakin-538729/
 </li>
 <li id="user-content-fn-4">
 <p>YouTube Channel:
-Yes, this really is my "Here is my SoundCloud" moment. I've recorded the talks and posted them on you tube <a href="https://www.youtube.com/channel/UCfdm5ljpPEQOoKWNEvibZKQ" rel="nofollow">here</a> <a href="#fnref-4" data-footnote-backref="" aria-label="Back to reference 4">↩</a></p>
+This really is my "Here is my SoundCloud" moment. I've recorded the talks and posted them on YouTube <a href="https://www.youtube.com/channel/UCfdm5ljpPEQOoKWNEvibZKQ" rel="nofollow">here</a>. The slide for the talks are <a href="https://github.com/anisotropi4/shambles">here</a>. <a href="#fnref-4" data-footnote-backref="" aria-label="Back to reference 4">↩</a></p>
 </li>
 <li id="user-content-fn-5">
 <p>Legendary Issues:
-Yes, I spelt "Pasenger" wrong, and the legend on the second diagram is wrong. The legend is log and the colour scale is linear. A corrected copy is available by correspondence. <a href="#fnref-5" data-footnote-backref="" aria-label="Back to reference 5">↩</a></p>
+Yes, I spelt "Pasenger" wrong, and the legend on the second diagram is wrong. The legend is log and the colour scale is linear. A corrected copy is available by correspondence. And people's names, which is worse. <a href="#fnref-5" data-footnote-backref="" aria-label="Back to reference 5">↩</a></p>
 </li>
 <li id="user-content-fn-6">
 <p>Hosting:
 Given the level of interest, and in anticipation of the next years data, I am in discussions about providing stable hosting elsewhere. I just need to find a way to also host the raw data and not just the image files. <a href="#fnref-6" data-footnote-backref="" aria-label="Back to reference 6">↩</a></p>
 </li>
 <li id="user-content-fn-7">
-<p>With his permission:
+<p>With permission:
 I did ask. <a href="#fnref-7" data-footnote-backref="" aria-label="Back to reference 7">↩</a></p>
 </li>
 </ol>
