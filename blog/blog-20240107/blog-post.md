@@ -90,9 +90,9 @@ On Thursday morning Alasdair sent me this kind note, which I share here[^7]
 3. 3% It's all fake, this guy doesn't know anything about trains 
 4. 2% Have you considered x, y, z approach that actually isn't possible anyway?
 
-Which is scarily accurate. I pulled some data together, in a conceptually simple way, albeit with an overly complex implementation, and drew some pictures. What is then interesting is that this showed something that wasn't immediate obvious by just looking at the data in a way that seemed to resonate with people.
+Which is scarily accurate. I pulled some data together, in a conceptually simple way, albeit with an overly complex implementation, and drew some pictures. What is then interesting is that this showed something that wasn't immediate obvious by just looking at the data in a way that seemed to resonate with people. 
 
-I have also been asked to be very clear about the data attribution, and I think this shows the power of open-data. It also looks like these images may make it onto Wikipedia, which is even better. The power of the free.
+I have also been asked to be very clear about the data attribution, and I think this shows the power of open-data. It also looks like these images may make it onto Wikipedia, which is even better. But more than this, we should release open-data that enable people to do these things because of the insight and interest it generates. The power of the free.
 
 It is also repeatable, in all of my stuff I attempt to write it up and for those interested in such things put in on GitHub or whereever and make it shareable and repeatable for others to use.
 
