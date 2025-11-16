@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/vega@6.2.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.0.2"></script>
+    </head>
+    <body>
+        <div id="vis"/>
+        <script>
+         const spec = {
+             "$schema": "https://vega.github.io/schema/vega/v6.json",
+             "background": "white",
+             "padding": 5,
+             "width": 700,
+             "height": 800,
+             "style": "view",
+             "encode": {"update": {"stroke": {"value": "transparent"}}},
+             "data": [
+                 {
+                     "name": "source_0",
+                     "url": "data/rail-030.json",
+                     "format": {"type": "topojson", "feature": "rail"}
+                 }
+             ],
+             "projections": [
+                 {
+                     "name": "projection",
+                     "size": {"signal": "[width, height]"},
+                     "fit": {"signal": "data('source_0')"}
+                 }
+             ],
+             "marks": [
+                 {
+                     "name": "layer_0_marks",
+                     "type": "shape",
+                     "style": ["geoshape"],
+                     "from": {"data": "source_0"},
+                     "encode": {
+                         "update": {
+                             "strokeWidth": {"value": 2},
+                             "fill": {"value": "transparent"},
+                             "stroke": {"scale": "color", "field": "id"},
+                             "ariaRoleDescription": {"value": "geoshape"},
+                             "description": {
+                                 "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+                             }
+                         }
+                     },
+                     "transform": [{"type": "geoshape", "projection": "projection"}]
+                 }
+             ],
+             "scales": [
+                 {
+                     "name": "color",
+                     "type": "ordinal",
+                     "domain": ["None", "OCL", "3rd rail", "4th rail", "Dual OCL 3rd rail"],
+                     "range": [
+                         "rgb( 44, 46, 53 )",
+                         "rgb( 255, 0, 0 )",
+                         "rgb( 0, 204, 16 )",
+                         "rgb( 0, 204, 16 )",
+                         "rgb( 255, 127, 0 )"
+                     ]
+                 }
+             ],
+             "legends": [
+                 {
+                     "offset": 0,
+                     "orient": "top-right",
+                     "stroke": "color",
+                     "symbolType": "circle",
+                     "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+                 }
+             ]
+         }
+         vegaEmbed("#vis", spec, {mode: "vega-lite"}).then(console.log).catch(console.warn);
+        </script>
+    </body>
+</html>
