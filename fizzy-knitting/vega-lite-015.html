@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/vega@6.2.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@7.0.2"></script>
+</head>
+<body>
+  <div id="vis"/>
+  <script>
+   const spec = {
+       "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+       "width": 700,
+       "height": 800,
+       "view": {"stroke": "transparent"},
+       "layer": [
+           {
+               "data": {
+                   "url": "data/rail-015.json",
+                   "format": {
+                       "type": "topojson",
+                       "feature": "rail"
+                   }
+               },
+               "mark": {
+                   "type": "geoshape",
+                   "filled": false,
+                   "strokeWidth": 2
+               },
+               "encoding": {
+                   "color": {
+                       "field": "id",
+                       "type": "nominal",
+                       "legend": {
+                           "title": null,
+                           "orient": "top-right",
+                           "offset": 0
+                       },
+                       "scale": {
+                           "domain": [
+                               "None",
+                               "OCL",
+                               "3rd rail",
+                               "4th rail",
+                               "Dual OCL 3rd rail"
+                           ],
+                           "range": [
+                               "rgb( 44, 46, 53 )",
+                               "rgb( 255, 0, 0 )",
+                               "rgb( 0, 204, 16 )",
+                               "rgb( 0, 204, 16 )",
+                               "rgb( 255, 127, 0 )"
+                           ]
+                           
+                       }
+                   }
+               }
+           }
+       ],
+   };
+   vegaEmbed("#vis", spec, {mode: "vega-lite"}).then(console.log).catch(console.warn);
+  </script>
+</body>
+</html>
+
