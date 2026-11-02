@@ -539,13 +539,6 @@ var bottomAttribution = new ol.control.Attribution({
 });
 map.addControl(bottomAttribution);
 
-var bottomAttribution = new ol.control.Attribution({
-  collapsible: false,
-  collapsed: false,
-  className: 'bottom-attribution'
-});
-map.addControl(bottomAttribution);
-
 map.once('rendercomplete', function() {
   var bottomAttributionUl = bottomAttribution.element.querySelector('ul');
   if (bottomAttributionUl) {
@@ -558,9 +551,6 @@ map.once('rendercomplete', function() {
     if (layerAttrs.length > 0) { attribHtml += ' &nbsp;|&nbsp; ' + layerAttrs.join(', '); }
     bottomAttributionUl.innerHTML = '<li>' + attribHtml + '</li>';
   }
-
-  const banner = document.getElementById('top-banner');
-  banner.textContent = 'more fish';
 });
 
 
