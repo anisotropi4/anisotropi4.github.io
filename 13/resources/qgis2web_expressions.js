@@ -763,3 +763,30 @@ function fnc__specialcol_(values, context) {
 function fnc_project_color(values, context) {
     return false;
 };
+
+
+
+function exp_h5modeledge04046400010copy_0rule0_eval_expression(context) {
+    // length <= 1000000 AND weight > 5 AND weight < 800
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return (((feature.get('length')  <= 1000000.0) && (feature.get('weight')  > 5.0)) && (feature.get('weight')  < 800.0));
+    } else {
+        return (((feature.get('length')  <= 1000000.0) && (feature.get('weight')  > 5.0)) && (feature.get('weight')  < 800.0));
+    }
+}
+
+
+function exp_h5modeledge04046400010copy_0rule1_eval_expression(context) {
+    // length <= 1000000 AND weight > 800
+
+    var feature = context.feature;
+    
+    if (feature.properties) {
+        return ((feature.get('length')  <= 1000000.0) && (feature.get('weight')  > 800.0));
+    } else {
+        return ((feature.get('length')  <= 1000000.0) && (feature.get('weight')  > 800.0));
+    }
+}

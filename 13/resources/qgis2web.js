@@ -5,19 +5,14 @@ var map = new ol.Map({
     layers: layersList,
     view: new ol.View({
         constrainResolution: false,
-        maxZoom: 13,
-        minZoom: 3,
+        maxZoom: 28,
+        minZoom: 1,
         
-        projection: new ol.proj.Projection({
-            code: 'EPSG:27700',
-            //extent: [65950.217300, 10530.000000, 655000.000000, 1211930.000000],
-            units: 'm'
-        })
     })
 });
 
 //initial view - epsg:3857 coordinates if not "Match project CRS"
-map.getView().fit([259654.296630, 262793.273657, 596395.808778, 578160.773657], map.getSize());
+map.getView().fit([-19944003.638756, -106338076.483329, 19976193.943422, 106338076.483329], map.getSize());
 
 //change cursor
 function pointerOnFeature(evt) {
